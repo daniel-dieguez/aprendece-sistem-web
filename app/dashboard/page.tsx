@@ -6,7 +6,7 @@ import Form from './form';
 import List from './list';
 import { ContentProvider } from './context';
 
-export default function Page() {
+export default function page() {
     return (
         <ContentProvider>
             <div className="page-content">
