@@ -4,6 +4,7 @@
 import { usePathname } from "next/navigation";
 import Navbar from "../component/navbar";
 
+
 export default function NavbarWrapper() {
   const pathname = usePathname();
 

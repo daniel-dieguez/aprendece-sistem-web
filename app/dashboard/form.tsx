@@ -2,6 +2,7 @@ import React from 'react'
 
 export default function form() {
   return (
-    <div>Form</div>
+    <div><h1>
+      </h1></div>
   )
 }
