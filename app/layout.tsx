@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-// import Time from './component/time'
-
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import NavbarWrapper from "./component/navbarWrapper";
 import TimeWrapper from "./component/timeWrapper";
+
+import { TimeDateProvider } from "./component/global/TimeDateContext";
+
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,12 +38,16 @@ export default function RootLayout({
     >
       <body className="min-h-full flex antialiased">
        
-        <NavbarWrapper />
-         <div className="flex flex-col flex-1">
-          <TimeWrapper />
-          <main className="flex-1">{children}</main>
-        </div>
-        <ToastContainer />
+        <TimeDateProvider>
+          {/* <ContentProvider> */}
+            <NavbarWrapper />
+            <div className="flex flex-col flex-1">
+              <TimeWrapper />
+              <main className="flex-1">{children}</main>
+            </div>
+            <ToastContainer />
+          {/* </ContentProvider> */}
+        </TimeDateProvider>
       </body>
     </html>
   );

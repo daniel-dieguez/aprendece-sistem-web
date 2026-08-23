@@ -6,7 +6,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 // import { newDate } from "react-datepicker/dist/dist/date_utils.js";
 
-import { useTimeDate } from "./global";
+import { useTimeDate } from "../component/global/TimeDateContext";
 
 
 export default function form() {

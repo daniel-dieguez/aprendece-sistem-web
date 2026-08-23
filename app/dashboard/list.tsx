@@ -74,7 +74,8 @@ const paginatedItems2 = useMemo(() => {
 
       <div className="p-4">
         <div className="flex flex-wrap gap-4">
-          <Card className="w-[250px] gap-2">
+          
+          <Card className="w-[250px] gap-2 border border-gray-800">
             <Person aria-label="Dollar sign icon" className="text-primary size-6" role="img" />
             <Card.Header>
               <Card.Title>Total de pacientes</Card.Title>
@@ -84,7 +85,7 @@ const paginatedItems2 = useMemo(() => {
             </Card.Footer>
           </Card>
 
-          <Card className="w-[250px] gap-2">
+          <Card className="w-[250px] gap-2 border border-gray-800">
             <Calendar aria-label="Dollar sign icon" className="text-primary size-6" role="img" />
             <Card.Header>
               <Card.Title>Citas para hoy</Card.Title>
@@ -94,7 +95,7 @@ const paginatedItems2 = useMemo(() => {
             </Card.Footer>
           </Card>
 
-          <Card className="w-[250px] gap-2">
+          <Card className="w-[250px] gap-2 border border-gray-800">
             <CircleCheck aria-label="Dollar sign icon" className="text-primary size-6" role="img" />
             <Card.Header>
               <Card.Title>Citas Completas</Card.Title>
@@ -104,7 +105,7 @@ const paginatedItems2 = useMemo(() => {
             </Card.Footer>
           </Card>
 
-          <Card className="w-[250px] gap-2">
+          <Card className="w-[250px] gap-2 border border-gray-800">
             <CircleDollar aria-label="Dollar sign icon" className="text-primary size-6" role="img" />
             <Card.Header>
               <Card.Title>Monto Generado</Card.Title>
