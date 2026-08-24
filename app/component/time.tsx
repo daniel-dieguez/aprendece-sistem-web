@@ -30,6 +30,7 @@ export default function form() {
                 // showIcon
                 selected={selectedDate}
                 onChange={setSelectedDate}
+                 dateFormat="dd/MM/yyyy"
                 className="rounded-lg border border-gray-300 px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-36"
             />
         </div>

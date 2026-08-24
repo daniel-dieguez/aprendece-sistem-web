@@ -8,16 +8,46 @@ import { useContentContext } from './context';
 
 export default function list() {
 
-  const { dias, pagess } = useContentContext();
+  const { dias, pagess,
+    totalPacientesAnioMes,
+    CitasHoy,
+    montosMensuales,
+    citasHoyss
+  } = useContentContext();
 
   const ROWS_PER_PAGE = pagess;
 
+  const formatoQuetzales = (monto?: number | null) => {
+    return new Intl.NumberFormat("es-GT", {
+      style: "currency",
+      currency: "GTQ",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(monto ?? 0);
+
+  };
+
+  const obtenerHora = (fecha: string): string => {
+  return new Date(fecha).toLocaleTimeString("es-GT", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+};
+
+
+
+  const citas = citasHoyss?.data ?? [];
+  console.log("que pesoooooo", citas )
   const columns = [
-    { id: "name", name: "Nombre" },
-    { id: "role", name: "Tipo" },
-    { id: "status", name: "Cita" },
-    { id: "email", name: "Estado" },
+    { id: "nombre", name: "Paciente" },
+    { id: "horaCitaInicio", name: "Hora inicio" },
+    { id: "horaCitaFin", name: "Hora fin" },
+    { id: "estado", name: "Estado" },
   ];
+    console.log("qasdasdasdasduyy", columns )
+
+
   const columns1 = [
     { id: "name", name: "Nombre" },
     { id: "role", name: "Atendido" },
@@ -48,21 +78,21 @@ export default function list() {
 
 
   const [page, setPage] = useState(1);
-  const totalPages = Math.ceil(users.length / ROWS_PER_PAGE);
+  const totalPages = Math.ceil(citas.length / ROWS_PER_PAGE);
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   const paginatedItems = useMemo(() => {
     const start = (page - 1) * ROWS_PER_PAGE;
-    return users.slice(start, start + ROWS_PER_PAGE);
-  }, [page, ROWS_PER_PAGE]);
+    return citas.slice(start, start + ROWS_PER_PAGE);
+  }, [page, citas]);
 
   const [page2, setPage2] = useState(1);
-const totalPages2 = Math.ceil(users.length / ROWS_PER_PAGE);
-const pages2 = Array.from({ length: totalPages2 }, (_, i) => i + 1);
-const paginatedItems2 = useMemo(() => {
-  const start = (page2 - 1) * ROWS_PER_PAGE;
-  return users.slice(start, start + ROWS_PER_PAGE);
-}, [page2, ROWS_PER_PAGE]);
+  const totalPages2 = Math.ceil(users.length / ROWS_PER_PAGE);
+  const pages2 = Array.from({ length: totalPages2 }, (_, i) => i + 1);
+  const paginatedItems2 = useMemo(() => {
+    const start = (page2 - 1) * ROWS_PER_PAGE;
+    return users.slice(start, start + ROWS_PER_PAGE);
+  }, [page2, ROWS_PER_PAGE]);
 
 
 
@@ -74,45 +104,67 @@ const paginatedItems2 = useMemo(() => {
 
       <div className="p-4">
         <div className="flex flex-wrap gap-4">
-          
+
           <Card className="w-[250px] gap-2 border border-gray-800">
-            <Person aria-label="Dollar sign icon" className="text-primary size-6" role="img" />
-            <Card.Header>
-              <Card.Title>Total de pacientes</Card.Title>
+            <Card.Header className="w-full flex flex-row items-center justify-between">
+              <Card.Title className="text-sm font-medium">Total de pacientes</Card.Title>
+              <div className="flex items-center justify-center size-10 rounded-lg bg-primary/10 shrink-0">
+                <Person aria-label="Icono de pacientes" className="text-primary size-5" role="img" />
+              </div>
             </Card.Header>
-            <Card.Footer>
-              <Card.Description>Esto es por mes</Card.Description>
-            </Card.Footer>
+
+            <div className="px-4">
+              <span className="text-3xl font-bold text-gray-900">
+                {totalPacientesAnioMes?.data ?? 0}
+              </span>
+            </div>
+          </Card>
+
+
+          <Card className="w-[250px] gap-2 border border-gray-800">
+            <Card.Header className="w-full flex flex-row items-center justify-between">
+              <Card.Title className="text-sm font-medium">Citas Hoy</Card.Title>
+              <div className="flex items-center justify-center size-10 rounded-lg bg-primary/10 shrink-0">
+                <Calendar aria-label="Icono de pacientes" className="text-primary size-5" role="img" />
+              </div>
+            </Card.Header>
+
+            <div className="px-4">
+              <span className="text-3xl font-bold text-gray-900">
+                {CitasHoy?.data ?? 0}
+              </span>
+            </div>
           </Card>
 
           <Card className="w-[250px] gap-2 border border-gray-800">
-            <Calendar aria-label="Dollar sign icon" className="text-primary size-6" role="img" />
-            <Card.Header>
-              <Card.Title>Citas para hoy</Card.Title>
+            <Card.Header className="w-full flex flex-row items-center justify-between">
+              <Card.Title className="text-sm font-medium">Citas Completas</Card.Title>
+              <div className="flex items-center justify-center size-10 rounded-lg bg-primary/10 shrink-0">
+                <CircleCheck aria-label="Icono de pacientes" className="text-primary size-5" role="img" />
+              </div>
             </Card.Header>
-            <Card.Footer>
-              <Card.Description>Esto es por mes</Card.Description>
-            </Card.Footer>
+
+            <div className="px-4">
+              <span className="text-3xl font-bold text-gray-900">
+                {/* //{totalPacientesAnioMes?.data ?? 0} */}
+                Null
+              </span>
+            </div>
           </Card>
 
           <Card className="w-[250px] gap-2 border border-gray-800">
-            <CircleCheck aria-label="Dollar sign icon" className="text-primary size-6" role="img" />
-            <Card.Header>
-              <Card.Title>Citas Completas</Card.Title>
+            <Card.Header className="w-full flex flex-row items-center justify-between">
+              <Card.Title className="text-sm font-medium">Generado al Mes</Card.Title>
+              <div className="flex items-center justify-center size-10 rounded-lg bg-primary/10 shrink-0">
+                <CircleDollar aria-label="Icono de pacientes" className="text-primary size-5" role="img" />
+              </div>
             </Card.Header>
-            <Card.Footer>
-              <Card.Description>Esto es por mes</Card.Description>
-            </Card.Footer>
-          </Card>
 
-          <Card className="w-[250px] gap-2 border border-gray-800">
-            <CircleDollar aria-label="Dollar sign icon" className="text-primary size-6" role="img" />
-            <Card.Header>
-              <Card.Title>Monto Generado</Card.Title>
-            </Card.Header>
-            <Card.Footer>
-              <Card.Description>Esto es por mes</Card.Description>
-            </Card.Footer>
+            <div className="px-4">
+              <span className="text-3xl font-bold text-gray-900">
+                {formatoQuetzales(montosMensuales?.data)}
+              </span>
+            </div>
           </Card>
         </div>
 
@@ -122,30 +174,30 @@ const paginatedItems2 = useMemo(() => {
 
       <div className="flex flex-col md:flex-row gap-4 p-4">
         <div className="flex-1">
-           <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1">
 
             <Label>
-            Proximas Citas
-          </Label>
-          <Description>
-            Citas programadas para hoy
-          </Description>
-           </div>
-          
+              Proximas Citas
+            </Label>
+            <Description>
+              Citas programadas para hoy
+            </Description>
+          </div>
+
 
           <Table>
             <Table.ScrollContainer>
               <Table.Content aria-label="Table with pagination" className="min-w-[300px]">
                 <Table.Header columns={columns}>
                   {(column) => (
-                    <Table.Column isRowHeader={column.id === "name"}>{column.name}</Table.Column>
+                    <Table.Column isRowHeader={column.id === "nombre"}>{column.name}</Table.Column>
                   )}
                 </Table.Header>
                 <Table.Body items={paginatedItems}>
-                  {(user) => (
-                    <Table.Row>
+                  {(cita) => (
+                    <Table.Row key={cita.id}>
                       <Table.Collection items={columns}>
-                        {(column) => <Table.Cell>{user[column.id as keyof typeof user]}</Table.Cell>}
+                        {(column) => <Table.Cell>{cita[column.id as keyof typeof cita]}</Table.Cell>}
                       </Table.Collection>
                     </Table.Row>
                   )}
@@ -155,7 +207,7 @@ const paginatedItems2 = useMemo(() => {
             <Table.Footer>
               <Pagination size="sm">
                 <Pagination.Summary>
-                  {start} to {end} of {users.length} results
+                  {start} to {end} of {citas.length} results
                 </Pagination.Summary>
                 <Pagination.Content>
                   <Pagination.Item>
@@ -194,14 +246,14 @@ const paginatedItems2 = useMemo(() => {
           <div className="flex flex-col gap-1">
 
             <Label>
-            Pacientes Recientes
-          </Label>
-          <Description>
-            Ultimos pacientes Atendidos
-          </Description>
-           </div>
+              Pacientes Recientes
+            </Label>
+            <Description>
+              Ultimos pacientes Atendidos
+            </Description>
+          </div>
 
-          
+
 
 
 
