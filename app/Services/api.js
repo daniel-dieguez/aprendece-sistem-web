@@ -91,7 +91,7 @@ export const useFetch = (url, method = 'GET', body = null) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-console.log('URL final:', url);
+// console.log('URL final:', url);
 
   const fetchData = useCallback(async () => {
     if (!url) return;

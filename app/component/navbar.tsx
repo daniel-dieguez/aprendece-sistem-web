@@ -9,7 +9,7 @@ import Style from "../login/login.module.css";
 
 const links = [
   { href: "/dashboard", label: "Dashboard" },
-  { href: "/Personas", label: "Personas" },
+  { href: "/personas", label: "Personas" },
   { href: "/System", label: "System" },
 ];
 

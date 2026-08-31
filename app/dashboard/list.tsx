@@ -2,9 +2,23 @@ import React, { useContext, useMemo, useState } from 'react'
 import { CircleDollar, Person, Calendar, CircleCheck } from "@gravity-ui/icons";
 import { Button, Card, Link, Pagination, Table, Label, Description } from "@heroui/react";
 import { Container, Row, Col } from 'reactstrap';
+import Estado from '../component/global/Estado';
+import { Cita } from '../component/types/types';
 
 import { useContentContext } from './context';
 
+
+// type Cita = {
+//   id: number;
+//   idUsuario: number;
+//   nombre: string;
+//   estado: number;
+//   anio: number;
+//   mes: number;
+//   fechaCita: string;
+//   horaCitaInicio: string;
+//   horaCitaFin: string;
+// };
 
 export default function list() {
 
@@ -28,24 +42,46 @@ export default function list() {
   };
 
   const obtenerHora = (fecha: string): string => {
-  return new Date(fecha).toLocaleTimeString("es-GT", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  });
-};
+    return new Date(fecha).toLocaleTimeString("es-GT", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+  };
 
 
 
   const citas = citasHoyss?.data ?? [];
-  console.log("que pesoooooo", citas )
+  // estado render
+  const renderCell = (cita: Cita, columnId: string) => {
+    const valor = cita[columnId as keyof Cita];
+
+    if (
+      columnId === "horaCitaInicio" ||
+      columnId === "horaCitaFin"
+    ) {
+      return obtenerHora(valor as string);
+    }
+
+    if (columnId === "estado") {
+      return <Estado estado={valor as number} />;
+    }
+
+    return valor;
+  };
+
+
+
+
+
   const columns = [
     { id: "nombre", name: "Paciente" },
     { id: "horaCitaInicio", name: "Hora inicio" },
     { id: "horaCitaFin", name: "Hora fin" },
     { id: "estado", name: "Estado" },
+    
   ];
-    console.log("qasdasdasdasduyy", columns )
+  // console.log("qasdasdasdasduyy", columns)
 
 
   const columns1 = [
@@ -65,16 +101,16 @@ export default function list() {
     { email: "olivia@acme.com", id: 7, name: "Olivia Martinez", role: "Frontend Engineer", status: "Active" },
     { email: "james@acme.com", id: 8, name: "James Taylor", role: "Backend Engineer", status: "Active" },
   ];
-  const user2 = [
-    { email: "kate@acme.com", id: 1, name: "Kate Moore", role: "CEO", status: "Active" },
-    { email: "john@acme.com", id: 2, name: "John Smith", role: "CTO", status: "Active" },
-    { email: "sara@acme.com", id: 3, name: "Sara Johnson", role: "CMO", status: "On Leave" },
-    { email: "michael@acme.com", id: 4, name: "Michael Brown", role: "CFO", status: "Active" },
-    { email: "emily@acme.com", id: 5, name: "Emily Davis", role: "Product Manager", status: "Inactive" },
-    { email: "davis@acme.com", id: 6, name: "Davis Wilson", role: "Lead Designer", status: "Active" },
-    { email: "olivia@acme.com", id: 7, name: "Olivia Martinez", role: "Frontend Engineer", status: "Active" },
-    { email: "james@acme.com", id: 8, name: "James Taylor", role: "Backend Engineer", status: "Active" },
-  ];
+  // const user2 = [
+  //   { email: "kate@acme.com", id: 1, name: "Kate Moore", role: "CEO", status: "Active" },
+  //   { email: "john@acme.com", id: 2, name: "John Smith", role: "CTO", status: "Active" },
+  //   { email: "sara@acme.com", id: 3, name: "Sara Johnson", role: "CMO", status: "On Leave" },
+  //   { email: "michael@acme.com", id: 4, name: "Michael Brown", role: "CFO", status: "Active" },
+  //   { email: "emily@acme.com", id: 5, name: "Emily Davis", role: "Product Manager", status: "Inactive" },
+  //   { email: "davis@acme.com", id: 6, name: "Davis Wilson", role: "Lead Designer", status: "Active" },
+  //   { email: "olivia@acme.com", id: 7, name: "Olivia Martinez", role: "Frontend Engineer", status: "Active" },
+  //   { email: "james@acme.com", id: 8, name: "James Taylor", role: "Backend Engineer", status: "Active" },
+  // ];
 
 
   const [page, setPage] = useState(1);
@@ -86,13 +122,13 @@ export default function list() {
     return citas.slice(start, start + ROWS_PER_PAGE);
   }, [page, citas]);
 
-  const [page2, setPage2] = useState(1);
-  const totalPages2 = Math.ceil(users.length / ROWS_PER_PAGE);
-  const pages2 = Array.from({ length: totalPages2 }, (_, i) => i + 1);
-  const paginatedItems2 = useMemo(() => {
-    const start = (page2 - 1) * ROWS_PER_PAGE;
-    return users.slice(start, start + ROWS_PER_PAGE);
-  }, [page2, ROWS_PER_PAGE]);
+  // const [page2, setPage2] = useState(1);
+  // const totalPages2 = Math.ceil(users.length / ROWS_PER_PAGE);
+  // const pages2 = Array.from({ length: totalPages2 }, (_, i) => i + 1);
+  // const paginatedItems2 = useMemo(() => {
+  //   const start = (page2 - 1) * ROWS_PER_PAGE;
+  //   return users.slice(start, start + ROWS_PER_PAGE);
+  // }, [page2, ROWS_PER_PAGE]);
 
 
 
@@ -103,71 +139,81 @@ export default function list() {
     <div className="p-4">
 
       <div className="p-4">
-        <div className="flex flex-wrap gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
-          <Card className="w-[250px] gap-2 border border-gray-800">
-            <Card.Header className="w-full flex flex-row items-center justify-between">
-              <Card.Title className="text-sm font-medium">Total de pacientes</Card.Title>
-              <div className="flex items-center justify-center size-10 rounded-lg bg-primary/10 shrink-0">
-                <Person aria-label="Icono de pacientes" className="text-primary size-5" role="img" />
+          {/* Total de pacientes */}
+          <Card className="gap-3 border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+            <Card.Header className="w-full flex flex-row items-center justify-between px-4 pt-4">
+              <Card.Title className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                Nuevos pacientes
+              </Card.Title>
+              <div className="flex items-center justify-center size-10 rounded-xl bg-indigo-50 shrink-0">
+                <Person aria-label="Icono de pacientes" className="text-indigo-600 size-5" role="img" />
               </div>
             </Card.Header>
 
-            <div className="px-4">
-              <span className="text-3xl font-bold text-gray-900">
+            <div className="px-4 pb-4">
+              <span className="text-3xl font-semibold text-gray-900 tracking-tight">
                 {totalPacientesAnioMes?.data ?? 0}
               </span>
             </div>
           </Card>
 
-
-          <Card className="w-[250px] gap-2 border border-gray-800">
-            <Card.Header className="w-full flex flex-row items-center justify-between">
-              <Card.Title className="text-sm font-medium">Citas Hoy</Card.Title>
-              <div className="flex items-center justify-center size-10 rounded-lg bg-primary/10 shrink-0">
-                <Calendar aria-label="Icono de pacientes" className="text-primary size-5" role="img" />
+          {/* Citas Hoy */}
+          <Card className="gap-3 border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+            <Card.Header className="w-full flex flex-row items-center justify-between px-4 pt-4">
+              <Card.Title className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                Citas hoy
+              </Card.Title>
+              <div className="flex items-center justify-center size-10 rounded-xl bg-amber-50 shrink-0">
+                <Calendar aria-label="Icono de citas" className="text-amber-600 size-5" role="img" />
               </div>
             </Card.Header>
 
-            <div className="px-4">
-              <span className="text-3xl font-bold text-gray-900">
+            <div className="px-4 pb-4">
+              <span className="text-3xl font-semibold text-gray-900 tracking-tight">
                 {CitasHoy?.data ?? 0}
               </span>
             </div>
           </Card>
 
-          <Card className="w-[250px] gap-2 border border-gray-800">
-            <Card.Header className="w-full flex flex-row items-center justify-between">
-              <Card.Title className="text-sm font-medium">Citas Completas</Card.Title>
-              <div className="flex items-center justify-center size-10 rounded-lg bg-primary/10 shrink-0">
-                <CircleCheck aria-label="Icono de pacientes" className="text-primary size-5" role="img" />
+          {/* Citas Completadas */}
+          <Card className="gap-3 border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+            <Card.Header className="w-full flex flex-row items-center justify-between px-4 pt-4">
+              <Card.Title className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                Citas completadas
+              </Card.Title>
+              <div className="flex items-center justify-center size-10 rounded-xl bg-emerald-50 shrink-0">
+                <CircleCheck aria-label="Icono de citas completadas" className="text-emerald-600 size-5" role="img" />
               </div>
             </Card.Header>
 
-            <div className="px-4">
-              <span className="text-3xl font-bold text-gray-900">
-                {/* //{totalPacientesAnioMes?.data ?? 0} */}
+            <div className="px-4 pb-4">
+              <span className="text-3xl font-semibold text-gray-900 tracking-tight">
+                {/* {totalPacientesAnioMes?.data ?? 0} */}
                 Null
               </span>
             </div>
           </Card>
 
-          <Card className="w-[250px] gap-2 border border-gray-800">
-            <Card.Header className="w-full flex flex-row items-center justify-between">
-              <Card.Title className="text-sm font-medium">Generado al Mes</Card.Title>
-              <div className="flex items-center justify-center size-10 rounded-lg bg-primary/10 shrink-0">
-                <CircleDollar aria-label="Icono de pacientes" className="text-primary size-5" role="img" />
+          {/* Generado al mes */}
+          <Card className="gap-3 border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow bg-gray-900 text-white">
+            <Card.Header className="w-full flex flex-row items-center justify-between px-4 pt-4">
+              <Card.Title className="text-xs font-medium text-gray-300 uppercase tracking-wide">
+                Generado al mes
+              </Card.Title>
+              <div className="flex items-center justify-center size-10 rounded-xl bg-white/10 shrink-0">
+                <CircleDollar aria-label="Icono de ingresos" className="text-white size-5" role="img" />
               </div>
             </Card.Header>
 
-            <div className="px-4">
-              <span className="text-3xl font-bold text-gray-900">
+            <div className="px-4 pb-4">
+              <span className="text-3xl font-semibold tracking-tight">
                 {formatoQuetzales(montosMensuales?.data)}
               </span>
             </div>
           </Card>
         </div>
-
       </div>
 
 
@@ -193,11 +239,17 @@ export default function list() {
                     <Table.Column isRowHeader={column.id === "nombre"}>{column.name}</Table.Column>
                   )}
                 </Table.Header>
+
+
                 <Table.Body items={paginatedItems}>
                   {(cita) => (
                     <Table.Row key={cita.id}>
                       <Table.Collection items={columns}>
-                        {(column) => <Table.Cell>{cita[column.id as keyof typeof cita]}</Table.Cell>}
+                        {(column) => (
+                          <Table.Cell>
+                            {renderCell(cita, column.id)}
+                          </Table.Cell>
+                        )}
                       </Table.Collection>
                     </Table.Row>
                   )}
@@ -259,24 +311,24 @@ export default function list() {
 
           <Table>
             <Table.ScrollContainer>
-              <Table.Content aria-label="Table with pagination" className="min-w-[300px]">
+              {/* <Table.Content aria-label="Table with pagination" className="min-w-[300px]">
                 <Table.Header columns={columns1}>
-                  {(column) => (
+                  {/* {(column) => (
                     <Table.Column isRowHeader={column.id === "name"}>{column.name}</Table.Column>
-                  )}
+                  )} 
                 </Table.Header>
                 <Table.Body items={paginatedItems2}>
-                  {(user) => (
+                  {/* {(user) => (
                     <Table.Row>
                       <Table.Collection items={columns1}>
                         {(column) => <Table.Cell>{user[column.id as keyof typeof user]}</Table.Cell>}
                       </Table.Collection>
                     </Table.Row>
-                  )}
+                  )} 
                 </Table.Body>
-              </Table.Content>
+              </Table.Content> */}
             </Table.ScrollContainer>
-            <Table.Footer>
+            {/* <Table.Footer>
               <Pagination size="sm">
                 <Pagination.Summary>
                   {start} to {end} of {user2.length} results
@@ -309,7 +361,7 @@ export default function list() {
                   </Pagination.Item>
                 </Pagination.Content>
               </Pagination>
-            </Table.Footer>
+            </Table.Footer> */}
           </Table>
         </div>
 

@@ -8,6 +8,7 @@ type Cita = {
   fechaCita: string;
   horaCitaInicio: string;
   mes: number;
+  id: number;
   anio: number;
   horaCitaFin: string;
   estado: number;
@@ -55,13 +56,6 @@ export const ContentProvider = ({ children }: ProviderProps) => {
   const { data: CitasHoy } = useFetch(`${nameController}/citasTotalDiario/${anio}/${mes}/${dia}`,'GET' );
   const { data: montosMensuales } = useFetch(`${nameController2}/totalMensual/${anio}/${mes}`,'GET' );
   const { data: citasHoyss } = useFetch(`${nameController3}/allCitasDiarias/${anio}/${mes}/${dia}`,'GET' );
-
-  console.log("asdadasda",citasHoyss);
-
-  useEffect(() => {
-    // console.log('allData:', allData);
-    console.log('totalPacientesanioo:', totalPacientesAnioMes);
-  }, [totalPacientesAnioMes]);
 
 
   const value: ContextType = {
