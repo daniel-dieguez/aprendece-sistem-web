@@ -3,7 +3,7 @@
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { useTimeDate } from '../component/global/TimeDateContext';
 import { useFetch } from '../Services/api'
-import {Pacientes} from '../component/types/types'
+import { Pacientes } from '../component/types/types'
 
 
 
@@ -13,7 +13,13 @@ type ContextType = {
   anio: number | undefined;
   pagess: number;
   setPagess: React.Dispatch<React.SetStateAction<number>>;
-   listaPacientes: {data: Pacientes[];  response: number; } | null;
+  listaPacientes: { data: Pacientes[]; response: number; } | null;
+  opcion: number;
+  modal: boolean;
+  setModal: React.Dispatch<React.SetStateAction<boolean>>;
+   toggle: (data: number) => void;
+  oneData: any | null;
+  setOneData: React.Dispatch<React.SetStateAction<any | null>>;
 };
 
 export const ContentContext = createContext<ContextType | null>(null);
@@ -24,8 +30,11 @@ type ProviderProps = {
 
 export const ContentProvider = ({ children }: ProviderProps) => {
   const { dia, mes, anio } = useTimeDate();
-
+  const [opcion, setOpcion] = useState(0);
+  const [oneData, setOneData] = useState<any | null>(null);
+  const [modal, setModal] = useState(false);
   const [pagess, setPagess] = useState(15);
+
 
 
   const nameController = 'citas';
@@ -33,10 +42,20 @@ export const ContentProvider = ({ children }: ProviderProps) => {
   const nameController2 = 'montos';
   const nameController3 = 'citas';
 
- 
-  const { data: listaPacientes } = useFetch(`${nameController1}/listPersona/${anio}/${pagess}`,'GET' );
 
-//   const { data: citasHoyss } = useFetch(`${nameController3}/allCitasDiarias/${anio}/${mes}/${dia}`,'GET' );
+  const { data: listaPacientes } = useFetch(`${nameController1}/listPersona/${anio}/${pagess}`, 'GET');
+
+
+  //-------- toggles
+  const toggle = (data: number) => {
+  setOpcion(data);
+
+  if (data === 1) {
+    setOneData(null);
+  }
+
+  setModal((prev) => !prev);
+};
 
 
   const value: ContextType = {
@@ -45,9 +64,16 @@ export const ContentProvider = ({ children }: ProviderProps) => {
     anio,
     pagess,
     setPagess,
-    listaPacientes
-  
- 
+    listaPacientes,
+    opcion,
+    setModal,
+    modal,
+    toggle,
+    oneData,
+    setOneData
+
+
+
   };
 
   return (

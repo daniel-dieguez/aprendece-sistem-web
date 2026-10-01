@@ -191,7 +191,7 @@ export default function list() {
             <div className="px-4 pb-4">
               <span className="text-3xl font-semibold text-gray-900 tracking-tight">
                 {/* {totalPacientesAnioMes?.data ?? 0} */}
-                Null
+                0
               </span>
             </div>
           </Card>

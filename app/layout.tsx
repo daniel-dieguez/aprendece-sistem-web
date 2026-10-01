@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ToastContainer } from "react-toastify";
+// import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Toast } from "@heroui/react";
 
 import NavbarWrapper from "./component/navbarWrapper";
 import TimeWrapper from "./component/timeWrapper";
@@ -45,7 +46,8 @@ export default function RootLayout({
               <TimeWrapper />
               <main className="flex-1">{children}</main>
             </div>
-            <ToastContainer />
+            {/* <ToastContainer /> */}
+            <Toast.Provider />
           {/* </ContentProvider> */}
         </TimeDateProvider>
       </body>

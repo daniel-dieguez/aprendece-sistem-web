@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
+
 import { OptionsToast } from "../component/toastys";
 // import aprendece from "../../System/img/log.png";
 import aprendece from "../../app/img/log.png";
@@ -12,7 +13,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-import { ProgressCircle, Modal, Spinner } from "@heroui/react";
+import { ProgressCircle, Modal, Spinner, toast } from "@heroui/react";
 
 // import { Button } from "@heroui/react";
 
@@ -55,11 +56,18 @@ export default function Login() {
 
     } catch (err: any) {
       if (err.response?.status === 401) {
-        toast.error("Usuario o contraseña incorrectos", OptionsToast);
-              setIsLogin(false);
+        toast("Usuario o contraseña incorrectos", {
+          ...OptionsToast,
+          variant: "danger",
+        });
+        setIsLogin(false);
       } else {
-        toast.error("Error al conectar con servidor", OptionsToast);
-              setIsLogin(false);
+
+        toast("Error al conectar con servidor", {
+          ...OptionsToast,
+          variant: "danger",
+        });
+        setIsLogin(false);
       }
     }
   };
@@ -74,7 +82,7 @@ export default function Login() {
             <Modal.Container size={"xs"}>
               <Modal.Dialog className="sm:max-w-[360px]">
                 <Modal.Header>
-              
+
 
                   {/* <div className="flex justify-center">
                     <ProgressCircle aria-label="Loading" isIndeterminate>
@@ -89,7 +97,7 @@ export default function Login() {
                     <span className="text-xs text-muted">Iniciando sesión...</span>
                   </div>
 
-                 
+
                 </Modal.Header>
               </Modal.Dialog>
             </Modal.Container>
